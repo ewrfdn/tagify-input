@@ -12,7 +12,6 @@ export class TagifyInput {
       this.updateLastRange()
     }
     this.el.onkeydown = (event) => {
-      console.log('keydown', event.key)
       if (event.key === 'Enter') {
         event.preventDefault() // 阻止浏览器默认换行操作
         return false
@@ -81,19 +80,21 @@ export class TagifyInput {
 
   updateLastRange () {
     const selection = getSelection()
-    console.log('rangeCount', selection.rangeCount)
     this.lastEditRange = selection.getRangeAt(0)
-    console.log(this.lastEditRange)
   }
 
   get cursorIndex () {
-    console.log(this.lastEditRange)
     let res = []
     const childNodes = this.childNodesToList(this.el.childNodes)
 
     if (this.lastEditRange === null) {
-      res = [childNodes.length, 0]
-      return res
+      const tagName = this.getTagName(childNodes[childNodes.length - 1])
+      if (tagName === '#text') {
+        const text = childNodes[childNodes.length - 1].data || ''
+        return [childNodes.length, text.length]
+      } else {
+        return [childNodes.length, 0]
+      }
     }
     const startContainer = this.lastEditRange.startContainer
     if (startContainer === this.el) {
@@ -123,7 +124,6 @@ export class TagifyInput {
       return
     }
     const startNode = childNodes[startNodeIndex - 1]
-    console.log(startNode)
     const tagName = this.getTagName(startNode)
     if (tagName === 'span') {
       offset = 0
@@ -255,7 +255,6 @@ export class TagifyInput {
       while (parentNode && parentNode.className !== 'uneditable-tag') {
         parentNode = parentNode.parentNode
       }
-      console.log('remove', parentNode)
       this.el.removeChild(parentNode)
     }
     closeButton.onmouseover = (e) => {
@@ -297,7 +296,6 @@ export class TagifyInput {
     const res = this.value
     const itemConfig = { value: tagConfig.value, ...tagConfig, type: 'tag' }
     const cursorIndex = this.cursorIndex
-    console.log(cursorIndex)
     if (cursorIndex[0] === 0) {
       res.unshift(itemConfig)
       this.value = res
