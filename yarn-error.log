@@ -1,0 +1,57 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js install
+
+PATH: 
+  C:\Users\zhanghui\miniconda3;C:\Users\zhanghui\miniconda3\Library\mingw-w64\bin;C:\Users\zhanghui\miniconda3\Library\usr\bin;C:\Users\zhanghui\miniconda3\Library\bin;C:\Users\zhanghui\miniconda3\Scripts;C:\Users\zhanghui\miniconda3\bin;C:\Users\zhanghui\miniconda3\condabin;C:\Python310\Scripts;C:\Python310;C:\Python39\Scripts;C:\Python39;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\dotnet;C:\conda;C:\conda\Library\bin;C:\conda\Scripts;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files (x86)\Tencent\微信web开发者工具\dll;C:\Users\zhanghui\miniconda3;C:\Users\zhanghui\miniconda3\Library\mingw-w64\bin;C:\Users\zhanghui\miniconda3\Library\usr\bin;C:\Users\zhanghui\miniconda3\Library\bin;C:\Users\zhanghui\miniconda3\Scripts;C:\Users\zhanghui\AppData\Local\Microsoft\WindowsApps;C:\Users\zhanghui\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\zhanghui\AppData\Local\Programs\Fiddler;C:\Users\zhanghui\.dotnet\tools;C:\Program Files\JetBrains\PyCharm Community Edition 2021.3.3\bin;C:\Users\zhanghui\AppData\Local\Yarn\bin
+
+Yarn version: 
+  1.22.15
+
+Node version: 
+  16.14.2
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.npm.taobao.org/@vue%2feslint-config-standard: tunneling socket could not be established, cause=connect ECONNREFUSED 127.0.0.1:4780
+      at ClientRequest.onError (C:\Program Files (x86)\Yarn\lib\cli.js:152371:17)
+      at Object.onceWrapper (node:events:646:26)
+      at ClientRequest.emit (node:events:526:28)
+      at Socket.socketErrorListener (node:_http_client:442:9)
+      at Socket.emit (node:events:526:28)
+      at emitErrorNT (node:internal/streams/destroy:157:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:122:3)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  {
+      "name": "tagify-input",
+      "version": "1.0.0",
+      "description": "",
+      "main": "src/index.js",
+      "scripts": {
+          "test": "echo \"Error: no test specified\" && exit 1"
+      },
+      "author": "ewrfdn",
+      "license": "ISC",
+      "devDependencies": {
+          "@vue/eslint-config-standard": "^5.1.2",
+          "babel-eslint": "^10.1.0",
+          "copy-webpack-plugin": "^4.6.0",
+          "eslint": "^6.7.2",
+          "eslint-plugin-import": "^2.20.2",
+          "eslint-plugin-node": "^11.1.0",
+          "eslint-plugin-promise": "^4.2.1",
+          "eslint-plugin-standard": "^4.0.0",
+          "eslint-plugin-vue": "^7.0.0",
+          "webpack": "^5.74.0",
+          "webpack-cli": "^4.10.0"
+      }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

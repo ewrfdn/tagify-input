@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #edit {
+            height: 500px;
+            width: 500px;
+            border: 1px solid red;
+            outline: none;
+            padding: 3px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="../dist/index.js"></script>
+    <div id="edit">
+    </div>
+    <input type="text" id="emojiInput">
+    <button id="sendEmoji">发送</button>
+    <input type="text" id="x">
+    <input type="text" id="x2">
+    <button id="cursor">设置光标</button>
+    <button id="value" onclick="getValue()">获取value</button>
+    <script>
+        const edit = document.getElementById("edit")
+        const tag = new TagifyInput({ el: edit, copyProporty: ["id"] })
+        tag.value = [
+            {
+                value: "123",
+                id: "1",
+                type: "tag"
+            },
+            {
+                value: "text",
+                type: "text"
+            },
+            {
+                value: "890",
+                type: "tag",
+                id: "2",
+
+            },
+            {
+                value: "wasd",
+                type: "tag",
+                id: "3",
+            },
+        ]
+
+        document.getElementById('sendEmoji').onclick = function () {
+            var emojiInput = document.getElementById('emojiInput')
+            tag.addTag({ value: emojiInput.value || "222" })
+        }
+
+        document.getElementById('cursor').onclick = function () {
+            var input1 = document.getElementById('x')
+            var input2 = document.getElementById('x2')
+            console.log(tag.value)
+            tag.cursorIndex = [parseInt(input1.value || 1), parseInt(input2.value || 0)]
+        }
+        const getValue = () => {
+            console.log(tag.value)
+        }
+    </script>

@@ -1,0 +1,26 @@
+{
+    "name": "tagify-input",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/index.js",
+    "scripts": {
+        "serve": " webpack  --config webpack.config.js --watch  --mode production",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "webpack  --config webpack.config.js  --mode production "
+    },
+    "author": "ewrfdn",
+    "license": "ISC",
+    "devDependencies": {
+        "@vue/eslint-config-standard": "^5.1.2",
+        "babel-eslint": "^10.1.0",
+        "copy-webpack-plugin": "^4.6.0",
+        "eslint": "^6.7.2",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.0",
+        "eslint-plugin-vue": "^7.0.0",
+        "webpack": "^5.74.0",
+        "webpack-cli": "^4.10.0"
+    }
+}
