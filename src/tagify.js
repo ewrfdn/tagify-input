@@ -1,10 +1,11 @@
 export class TagifyInput {
-  constructor ({ el, copyProporty = [], fontSize = '14px' }) {
+  constructor ({ el, copyProperties = [], fontSize = '14px', fontColor = '#000000d9' }) {
     this.el = el
     this.fontSize = fontSize
+    this.fontColor = fontColor
     // this.setCssText()
     // this.autoInsertZeroWdithSpace = autoInsertZeroWdithSpace
-    el.style = `font-size:${fontSize};color:#000000d9`
+    el.style = `font-size:${fontSize};color:${fontColor}`
     this.el.contentEditable = true
     // this.el.appendChild(br)
     this._value = []
@@ -51,7 +52,7 @@ export class TagifyInput {
     this.el.onkeyup = (e) => {
       this.updateLastRange()
     }
-    this.copyProporty = copyProporty
+    this.copyProperties = copyProperties
   }
 
   setCssText () {
@@ -165,7 +166,7 @@ export class TagifyInput {
           value: e.value,
           type: 'tag'
         }
-        for (const propertyName of this.copyProporty) {
+        for (const propertyName of this.copyProperties) {
           tagItemConfig[propertyName] = e[propertyName]
         }
         res.push(tagItemConfig)
@@ -209,7 +210,7 @@ export class TagifyInput {
     const tag = document.createElement('span')
     const maxWidth = this.el.clientWidth - 36
     const backgroundColor = '#eeeeee'
-    const fontColor = '#000000d9'
+    const fontColor = this.fontColor
     tag.innerHTML = `<span style="margin-left:4px;font-size: ${this.fontSize};">${value}</span><span class="close" style="padding:0px 4px;vertical-align:top" ><svg style="" t="1663324576584" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1369" data-spm-anchor-id="a313x.7781069.0.i1" width="16" height="16"><path d="M504.224 470.288l207.84-207.84a16 16 0 0 1 22.608 0l11.328 11.328a16 16 0 0 1 0 22.624l-207.84 207.824 207.84 207.84a16 16 0 0 1 0 22.608l-11.328 11.328a16 16 0 0 1-22.624 0l-207.824-207.84-207.84 207.84a16 16 0 0 1-22.608 0l-11.328-11.328a16 16 0 0 1 0-22.624l207.84-207.824-207.84-207.84a16 16 0 0 1 0-22.608l11.328-11.328a16 16 0 0 1 22.624 0l207.824 207.84z" p-id="1370" fill="${fontColor}"></path></svg></span>`
     tag.style = `
         background:${backgroundColor};
@@ -249,7 +250,7 @@ export class TagifyInput {
     closeButton.style.position = 'relative'
     closeButton.style.top = '-2px'
 
-    closeButton.color = '#000000d9'
+    closeButton.color = this.fontColor
     closeButton.onclick = (e) => {
       let parentNode = e.target
       while (parentNode && parentNode.className !== 'uneditable-tag') {
@@ -268,7 +269,7 @@ export class TagifyInput {
     }
     tag.value = value
     tag.type = tag
-    for (const propertyName of this.copyProporty) {
+    for (const propertyName of this.copyProperties) {
       if (config[propertyName]) {
         tag[propertyName] = config[propertyName]
       }

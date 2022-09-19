@@ -19,7 +19,7 @@ export default {
   mounted () {
     this.tag = new TagifyInput({
       el: document.getElementById('12'),
-      copyProporty: ['prop']
+      copyProperties: ['prop']
     })
     this.tag.value = [
       {
