@@ -1,9 +1,10 @@
 export class TagifyInput {
-  constructor ({ el, copyProporty = [] }) {
+  constructor ({ el, copyProporty = [], fontSize = '14px' }) {
     this.el = el
+    this.fontSize = fontSize
     // this.setCssText()
     // this.autoInsertZeroWdithSpace = autoInsertZeroWdithSpace
-    el.style = 'font-size:14px;color:#000000d9'
+    el.style = `font-size:${fontSize};color:#000000d9`
     this.el.contentEditable = true
     // this.el.appendChild(br)
     this._value = []
@@ -209,24 +210,20 @@ export class TagifyInput {
     const maxWidth = this.el.clientWidth - 36
     const backgroundColor = '#eeeeee'
     const fontColor = '#000000d9'
-    tag.innerHTML = `<span style="margin-left:4px;position: relative;top:0px;font-size: 12px;">${value}</span><span class="close" style="padding:0px 4px;position:relative;top:-4px" ><svg style="position:relative;top:2px;left:4px" t="1663324576584" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1369" data-spm-anchor-id="a313x.7781069.0.i1" width="16" height="16"><path d="M504.224 470.288l207.84-207.84a16 16 0 0 1 22.608 0l11.328 11.328a16 16 0 0 1 0 22.624l-207.84 207.824 207.84 207.84a16 16 0 0 1 0 22.608l-11.328 11.328a16 16 0 0 1-22.624 0l-207.824-207.84-207.84 207.84a16 16 0 0 1-22.608 0l-11.328-11.328a16 16 0 0 1 0-22.624l207.84-207.824-207.84-207.84a16 16 0 0 1 0-22.608l11.328-11.328a16 16 0 0 1 22.624 0l207.824 207.84z" p-id="1370" fill="${fontColor}"></path></svg></span>`
+    tag.innerHTML = `<span style="margin-left:4px;font-size: ${this.fontSize};">${value}</span><span class="close" style="padding:0px 4px;vertical-align:top" ><svg style="" t="1663324576584" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1369" data-spm-anchor-id="a313x.7781069.0.i1" width="16" height="16"><path d="M504.224 470.288l207.84-207.84a16 16 0 0 1 22.608 0l11.328 11.328a16 16 0 0 1 0 22.624l-207.84 207.824 207.84 207.84a16 16 0 0 1 0 22.608l-11.328 11.328a16 16 0 0 1-22.624 0l-207.824-207.84-207.84 207.84a16 16 0 0 1-22.608 0l-11.328-11.328a16 16 0 0 1 0-22.624l207.84-207.824-207.84-207.84a16 16 0 0 1 0-22.608l11.328-11.328a16 16 0 0 1 22.624 0l207.824 207.84z" p-id="1370" fill="${fontColor}"></path></svg></span>`
     tag.style = `
         background:${backgroundColor};
         border:solid 1px #aaa;
         color${fontColor};
-        height:16px
-        font-size:12px;
+        font-size:${this.fontSize};
         border-radius:2px;
         margin:0px 1px 0px 1px;
         white-space: nowrap;
         white-space:nowrap;
         height:14px;
         transition: .13s ease-out;
-        vertical-align:middle;
-        overflow:hidden; 
-        text-overflow:ellipsis; 
-        display:inline-block;
-        padding:1px;
+        vertical-align:top;
+        line-height:calc(${this.fontSize} * 1.3 + 4px);
         `
     tag.className = 'uneditable-tag'
     tag.onmouseover = (e) => {
@@ -243,11 +240,14 @@ export class TagifyInput {
     textNode.style.maxWidth = `${maxWidth}px`
     textNode.style.textOverflow = 'ellipsis'
     textNode.style.overflow = 'hidden'
-    textNode.verticalAlign = 'middle'
+    textNode.style.verticalAlign = 'top'
     const closeButton = tag.childNodes[1].childNodes[0]
     closeButton.style.borderRadius = '50%'
-    closeButton.style.width = '10px'
-    closeButton.style.height = '10px'
+    closeButton.style.width = this.fontSize
+    closeButton.style.height = this.fontSize
+    closeButton.style.verticalAlign = 'middle'
+    closeButton.style.position = 'relative'
+    closeButton.style.top = '-2px'
 
     closeButton.color = '#000000d9'
     closeButton.onclick = (e) => {
