@@ -1,10 +1,14 @@
+import { nanoid } from 'nanoid'
 export class TagifyInput {
-  constructor ({ el, copyProporty = [], fontSize = '14px' }) {
+  constructor ({ el, copyProperties = [], defaultStyle = {} }) {
     this.el = el
-    this.fontSize = fontSize
+    this.fontSize = defaultStyle.fontSize || '14px'
+    this.fontColor = defaultStyle.fontColor || '#000000d9'
+    this.tagBackgroundColor = defaultStyle.tagBackgroundColor || '#eeeeee'
+    this.tagHoverColor = defaultStyle.tagHoverColor || '#ddeeee'
     // this.setCssText()
     // this.autoInsertZeroWdithSpace = autoInsertZeroWdithSpace
-    el.style = `font-size:${fontSize};color:#000000d9`
+    el.style = `font-size:${this.fontSize};color:${this.fontColor}`
     this.el.contentEditable = true
     // this.el.appendChild(br)
     this._value = []
@@ -51,7 +55,7 @@ export class TagifyInput {
     this.el.onkeyup = (e) => {
       this.updateLastRange()
     }
-    this.copyProporty = copyProporty
+    this.copyProperties = copyProperties
   }
 
   setCssText () {
@@ -70,6 +74,9 @@ export class TagifyInput {
   }
 
   getTagName (element) {
+    if (!element) {
+      return null
+    }
     if (typeof (element.tagName) === 'string') {
       return element.tagName.toLowerCase()
     } else if (element.nodeName) {
@@ -82,6 +89,10 @@ export class TagifyInput {
   updateLastRange () {
     const selection = getSelection()
     this.lastEditRange = selection.getRangeAt(0)
+  }
+
+  getTagConfig (id) {
+    return this._value.find(i => i.id === id)
   }
 
   get cursorIndex () {
@@ -160,12 +171,16 @@ export class TagifyInput {
           })
         }
       } else if (tagName === 'span') {
+        const config = this.getTagConfig(e.id) || {}
+        console.log(config)
         const tagItemConfig = {
+          ...config,
           index: index,
           value: e.value,
+          id: e.id,
           type: 'tag'
         }
-        for (const propertyName of this.copyProporty) {
+        for (const propertyName of this.copyProperties) {
           tagItemConfig[propertyName] = e[propertyName]
         }
         res.push(tagItemConfig)
@@ -179,6 +194,9 @@ export class TagifyInput {
     this._value = valueList
     let preValue = ''
     for (const item of valueList) {
+      if (!item.id) {
+        item.id = nanoid()
+      }
       const { value, type } = item
       if (type === 'tag') {
         if (preValue) {
@@ -187,10 +205,6 @@ export class TagifyInput {
         }
         const tag = this.createTag(item)
         this.el.appendChild(tag)
-        // if (this.autoInsertZeroWdithSpace) {
-        //     const textNode = document.createTextNode("\u200B")
-        //     this.el.appendChild(textNode)
-        // }
         preValue = ''
       } else if (type === 'text') {
         preValue += value
@@ -204,12 +218,30 @@ export class TagifyInput {
     this.el.appendChild(br)
   }
 
+  copyStyle (element, style) {
+    if (element.nodeType !== Node.ELEMENT_NODE) {
+      return
+    }
+    if (typeof (style) === 'string') {
+      element.style = style
+      return
+    }
+    if (!style || !(style instanceof Object)) {
+      return
+    }
+    const keys = Object.keys(style)
+    keys.forEach(key => {
+      element.style[key] = style[key]
+    })
+  }
+
   createTag (config) {
-    const { value } = config
+    const { value, id, validated = true, errorMessage = 'error_message', tagStyle = {}, textNodeStyle = {}, closeStyle = {} } = config
+    console.log(validated)
     const tag = document.createElement('span')
     const maxWidth = this.el.clientWidth - 36
-    const backgroundColor = '#eeeeee'
-    const fontColor = '#000000d9'
+    const backgroundColor = this.tagBackgroundColor
+    const fontColor = this.fontColor
     tag.innerHTML = `<span style="margin-left:4px;font-size: ${this.fontSize};">${value}</span><span class="close" style="padding:0px 4px;vertical-align:top" ><svg style="" t="1663324576584" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1369" data-spm-anchor-id="a313x.7781069.0.i1" width="16" height="16"><path d="M504.224 470.288l207.84-207.84a16 16 0 0 1 22.608 0l11.328 11.328a16 16 0 0 1 0 22.624l-207.84 207.824 207.84 207.84a16 16 0 0 1 0 22.608l-11.328 11.328a16 16 0 0 1-22.624 0l-207.824-207.84-207.84 207.84a16 16 0 0 1-22.608 0l-11.328-11.328a16 16 0 0 1 0-22.624l207.84-207.824-207.84-207.84a16 16 0 0 1 0-22.608l11.328-11.328a16 16 0 0 1 22.624 0l207.824 207.84z" p-id="1370" fill="${fontColor}"></path></svg></span>`
     tag.style = `
         background:${backgroundColor};
@@ -226,15 +258,23 @@ export class TagifyInput {
         line-height:calc(${this.fontSize} * 1.3 + 4px);
         `
     tag.className = 'uneditable-tag'
+    tag.tagId = id
     tag.onmouseover = (e) => {
-      tag.style.backgroundColor = '#ddeeee'
+      tag.style.background = this.tagHoverColor
       // tag.style.padding = "1px"
     }
     tag.onmouseout = (e) => {
-      tag.style.backgroundColor = backgroundColor
+      tag.style.background = tagStyle && tagStyle.background ? tagStyle.background : backgroundColor
       // tag.style.padding = "0px"
     }
     tag.title = value
+
+    if (validated === false) {
+      tag.style.border = 'solid 2px #f00'
+    }
+    if (errorMessage) {
+      tag.title = errorMessage
+    }
     const textNode = tag.childNodes[0]
     textNode.style.display = 'inline-block'
     textNode.style.maxWidth = `${maxWidth}px`
@@ -248,8 +288,10 @@ export class TagifyInput {
     closeButton.style.verticalAlign = 'middle'
     closeButton.style.position = 'relative'
     closeButton.style.top = '-2px'
-
-    closeButton.color = '#000000d9'
+    closeButton.color = this.fontColor
+    this.copyStyle(closeButton, closeStyle)
+    this.copyStyle(textNode, textNodeStyle)
+    this.copyStyle(tag, tagStyle)
     closeButton.onclick = (e) => {
       let parentNode = e.target
       while (parentNode && parentNode.className !== 'uneditable-tag') {
@@ -268,7 +310,7 @@ export class TagifyInput {
     }
     tag.value = value
     tag.type = tag
-    for (const propertyName of this.copyProporty) {
+    for (const propertyName of this.copyProperties) {
       if (config[propertyName]) {
         tag[propertyName] = config[propertyName]
       }

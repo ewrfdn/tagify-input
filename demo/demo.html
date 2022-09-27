@@ -28,23 +28,28 @@
     <button id="value" onclick="getValue()">获取value</button>
     <script>
         const edit = document.getElementById("edit")
-        const tag = new TagifyInput({ el: edit, copyProporty: ["id"] })
+        const tag = new TagifyInput({ el: edit, copyProperties: ["id"] })
         tag.value = [
             {
                 value: "123",
                 id: "1",
-                type: "tag"
+                type: "tag",
+                validated:false,
+                errorMessage:"变量不存在",
+                tagStyle:{
+                    background:"#f00"
+                }
             },
-            {
-                value: "text",
-                type: "text"
-            }
+            // {
+            //     value: "text",
+            //     type: "text"
+            // }
 
         ]
 
         document.getElementById('sendEmoji').onclick = function () {
             var emojiInput = document.getElementById('emojiInput')
-            tag.addTag({ value: emojiInput.value || "222" })
+            tag.addTag({ value: emojiInput.value || "222",id:"222" })
         }
 
         document.getElementById('cursor').onclick = function () {
