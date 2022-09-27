@@ -4,8 +4,9 @@ export class TagifyInput {
     this.el = el
     this.fontSize = defaultStyle.fontSize || '14px'
     this.fontColor = defaultStyle.fontColor || '#000000d9'
-    this.tagBackgroundColor = defaultStyle.tagBackgroundColor || '#eeeeee'
+    this.tagBackgroundColor = defaultStyle.tagBackgroundColor || '#fafafa'
     this.tagHoverColor = defaultStyle.tagHoverColor || '#ddeeee'
+    this.tagBorderColor = defaultStyle.tagBorderColor || '#d9d9d9'
     // this.setCssText()
     // this.autoInsertZeroWdithSpace = autoInsertZeroWdithSpace
     el.style = `font-size:${this.fontSize};color:${this.fontColor}`
@@ -236,7 +237,7 @@ export class TagifyInput {
   }
 
   createTag (config) {
-    const { value, id, validated = true, errorMessage = 'error_message', tagStyle = {}, textNodeStyle = {}, closeStyle = {} } = config
+    const { value, id, validated = true, errorMessage = '', tagStyle = {}, textNodeStyle = {}, closeStyle = {} } = config
     console.log(validated)
     const tag = document.createElement('span')
     const maxWidth = this.el.clientWidth - 36
@@ -245,7 +246,7 @@ export class TagifyInput {
     tag.innerHTML = `<span style="margin-left:4px;font-size: ${this.fontSize};">${value}</span><span class="close" style="padding:0px 4px;vertical-align:top" ><svg style="" t="1663324576584" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1369" data-spm-anchor-id="a313x.7781069.0.i1" width="16" height="16"><path d="M504.224 470.288l207.84-207.84a16 16 0 0 1 22.608 0l11.328 11.328a16 16 0 0 1 0 22.624l-207.84 207.824 207.84 207.84a16 16 0 0 1 0 22.608l-11.328 11.328a16 16 0 0 1-22.624 0l-207.824-207.84-207.84 207.84a16 16 0 0 1-22.608 0l-11.328-11.328a16 16 0 0 1 0-22.624l207.84-207.824-207.84-207.84a16 16 0 0 1 0-22.608l11.328-11.328a16 16 0 0 1 22.624 0l207.824 207.84z" p-id="1370" fill="${fontColor}"></path></svg></span>`
     tag.style = `
         background:${backgroundColor};
-        border:solid 1px #aaa;
+        border:solid 1px ${this.tagBorderColor};
         color${fontColor};
         font-size:${this.fontSize};
         border-radius:2px;
@@ -270,7 +271,7 @@ export class TagifyInput {
     tag.title = value
 
     if (validated === false) {
-      tag.style.border = 'solid 2px #f00'
+      tag.style.border = 'solid 1px #ff4d4f'
     }
     if (errorMessage) {
       tag.title = errorMessage
@@ -287,7 +288,7 @@ export class TagifyInput {
     closeButton.style.height = this.fontSize
     closeButton.style.verticalAlign = 'middle'
     closeButton.style.position = 'relative'
-    closeButton.style.top = '-2px'
+    closeButton.style.top = '-1.6px'
     closeButton.color = this.fontColor
     this.copyStyle(closeButton, closeStyle)
     this.copyStyle(textNode, textNodeStyle)
