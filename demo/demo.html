@@ -29,6 +29,9 @@
     <script>
         const edit = document.getElementById("edit")
         const tag = new TagifyInput({ el: edit, copyProperties: ["id"] })
+        tag.onChange((value,event)=>{
+            console.log('value',value, event)
+        })
         tag.value = [
             {
                 value: "123",
@@ -43,13 +46,33 @@
             // {
             //     value: "text",
             //     type: "text"
-            // }
+            // },
+            {
+                value: "123",
+                id: "3",
+                type: "tag",
+                validated:false,
+                errorMessage:"变量不存在",
+                // tagStyle:{
+                //     background:"#f00"
+                // }
+            },
+            {
+                value: "123",
+                id: "3",
+                type: "tag",
+                validated:false,
+                errorMessage:"变量不存在",
+                // tagStyle:{
+                //     background:"#f00"
+                // }
+            },
 
         ]
 
         document.getElementById('sendEmoji').onclick = function () {
             var emojiInput = document.getElementById('emojiInput')
-            tag.addTag({ value: emojiInput.value || "222",id:"222" })
+            tag.addTag({ value: emojiInput.value || "222" })
         }
 
         document.getElementById('cursor').onclick = function () {
