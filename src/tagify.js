@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid'
+import _ from 'lodash'
 export class TagifyInput {
   constructor ({ el, copyProperties = [], defaultStyle = {} }) {
     this.el = el
@@ -14,9 +15,15 @@ export class TagifyInput {
     // this.el.appendChild(br)
     this._value = []
     this.lastEditRange = null
+    this.handleChange = null
     this.el.onclick = (e) => {
       this.updateLastRange()
     }
+    this.el.addEventListener('input', (event) => {
+      if (this.handleChange && this.handleChange instanceof Function) {
+        this.handleChange(event)
+      }
+    })
     this.el.onkeydown = (event) => {
       if (event.key === 'Enter') {
         event.preventDefault() // 阻止浏览器默认换行操作
@@ -85,6 +92,10 @@ export class TagifyInput {
     } else {
       return null
     }
+  }
+
+  onChange (method) {
+    this.handleChange = _.debounce((event) => method(this.value, event), 300)
   }
 
   updateLastRange () {
@@ -168,12 +179,12 @@ export class TagifyInput {
           res.push({
             index: index,
             value: e.data.replace('\u200B', ''),
-            type: 'text'
+            type: 'text',
+            validated: true
           })
         }
       } else if (tagName === 'span') {
         const config = this.getTagConfig(e.id) || {}
-        console.log(config)
         const tagItemConfig = {
           ...config,
           index: index,
@@ -187,6 +198,7 @@ export class TagifyInput {
         res.push(tagItemConfig)
       }
     })
+    this._value = res
     return res
   }
 
@@ -238,7 +250,6 @@ export class TagifyInput {
 
   createTag (config) {
     const { value, id, validated = true, errorMessage = '', tagStyle = {}, textNodeStyle = {}, closeStyle = {} } = config
-    console.log(validated)
     const tag = document.createElement('span')
     const maxWidth = this.el.clientWidth - 36
     const backgroundColor = this.tagBackgroundColor
@@ -299,6 +310,7 @@ export class TagifyInput {
         parentNode = parentNode.parentNode
       }
       this.el.removeChild(parentNode)
+      this.handleChange('removeTag')
     }
     closeButton.onmouseover = (e) => {
       closeButton.style.backgroundColor = '#eebbbb'
@@ -338,6 +350,9 @@ export class TagifyInput {
   addTag (tagConfig) {
     const res = this.value
     const itemConfig = { value: tagConfig.value, ...tagConfig, type: 'tag' }
+    if (!itemConfig.id) {
+      itemConfig.id = nanoid()
+    }
     const cursorIndex = this.cursorIndex
     if (cursorIndex[0] === 0) {
       res.unshift(itemConfig)
@@ -369,5 +384,6 @@ export class TagifyInput {
     }
     this.value = res
     this.cursorIndex = [cursorIndex[0] + 1, 0]
+    this.handleChange('addTag')
   }
 }
