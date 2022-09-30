@@ -1,6 +1,6 @@
 {
     "name": "tagify-input",
-    "version": "1.0.10",
+    "version": "1.0.11",
     "description": "",
     "main": "src/tagify.js",
     "scripts": {

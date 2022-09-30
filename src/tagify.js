@@ -270,7 +270,7 @@ export class TagifyInput {
         line-height:calc(${this.fontSize} * 1.3 + 4px);
         `
     tag.className = 'uneditable-tag'
-    tag.tagId = id
+    tag.id = id
     tag.onmouseover = (e) => {
       tag.style.background = this.tagHoverColor
       // tag.style.padding = "1px"
