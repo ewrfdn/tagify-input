@@ -28,10 +28,7 @@
     <button id="value" onclick="getValue()">获取value</button>
     <script>
         const edit = document.getElementById("edit")
-        const tag = new TagifyInput({ el: edit, copyProperties: ["id"] })
-        tag.onChange((value,event)=>{
-            console.log('value',value, event)
-        })
+        const tag = new TagifyInput({ el: edit, copyProperties: [] })
         tag.value = [
             {
                 value: "123",
